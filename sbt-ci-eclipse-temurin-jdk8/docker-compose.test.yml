@@ -1,0 +1,18 @@
+version: '3'
+services:
+  sbt-ci-eclipse-temurin-jdk8:
+    build:
+      context: .
+    image: chatwork/sbt-ci-eclipse-temurin-jdk8
+  sut:
+    image: kiwicom/dgoss
+    environment:
+      GOSS_FILES_PATH: /goss
+      GOSS_FILES_STRATEGY: cp
+    command: /usr/local/bin/dgoss run chatwork/sbt-ci-eclipse-temurin-jdk8 tail -f /dev/null
+    container_name: sbt-ci-eclipse-temurin-jdk8
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./goss:/goss
+    depends_on:
+      - sbt-ci-eclipse-temurin-jdk8
